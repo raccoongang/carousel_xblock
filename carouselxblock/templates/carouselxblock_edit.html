@@ -1,0 +1,46 @@
+<div class="wrapper-comp-settings editor-with-buttons is-active" id="settings-tab">
+  <ul class="list-input settings-list">
+
+    <li class="field comp-setting-entry is-set">
+      <div class="wrapper-comp-setting">
+        <label class="label setting-label" for="edit_display_name">  "Display Name" </label>
+        <input class="input setting-input" id="edit_display_name" value="{{ display_name }}" type="text">
+      </div>
+      <span class="tip setting-help">  "Title" </span>
+    </li>
+
+    <li class="field comp-setting-entry is-set">
+      <div class='img_url_fields'>
+        {% for url in img_urls %}
+          <div class="wrapper-comp-setting">
+            <label class="label setting-label" for="url">  "Img url" </label>
+            <input class="input setting-input url" value="{{ url }}" type="text">
+            {% if not forloop.first %}<a href="#" class="delete_input_url"> X </a>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <span class="tip setting-help">  "Img URL"</span>
+      <a href="#" class="add_input_url"> Add url </a>
+    </li>
+
+    <li class="field comp-setting-entry is-set">
+      <div class="wrapper-comp-setting">
+        <label class="label setting-label" for="interval">  "Interval" </label>
+        <input class="input setting-input" id="interval" value="{{ interval }}" type="text">
+      </div>
+      <span class="tip setting-help"> "Interval" </span>
+    </li>
+
+  </ul>
+
+  <div class="xblock-actions">
+    <ul>
+      <li class="action-item">
+        <a href="#" class="button action-primary action-save"> Save </a>
+      </li>
+      <li class="action-item">
+        <a href="#" class="button action-cancel"> Cancel </a>
+      </li>
+    </ul>
+  </div>
+</div>
