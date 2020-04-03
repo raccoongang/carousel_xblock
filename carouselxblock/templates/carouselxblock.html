@@ -1,24 +1,25 @@
-<h1>{{display_name}}</h1>
-<div class="slideshow-container" interval="{{interval}}">
+<div class="carousel">
+  <h1>{{display_name}}</h1>
+  <div class="slideshow-container" interval="{{interval}}">
 
-  {% for img in img_urls %}
-    <div class="mySlides fade">
-      {% if img_urls|length > 1 %}
-        <div class="numbertext">{{ forloop.counter }} / {{img_urls|length}}</div>
-      {% endif %}
-      <img src="{{img}}" style="width:100%">
-    </div>
-  {% endfor %}
-
-  {% if img_urls|length > 1 %}
-    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-</div>
-  <br>
-  <div style="text-align:center">
     {% for img in img_urls %}
-      <span class="dot" onclick="currentSlide({{ forloop.counter }})"></span>
+      <div class="mySlides fade">
+        {% if img_urls|length > 1 %}
+          <div class="numbertext">{{ forloop.counter }} / {{img_urls|length}}</div>
+        {% endif %}
+        <img src="{{img}}">
+      </div>
     {% endfor %}
-  {% endif %}
-</div>
 
+    {% if img_urls|length > 1 %}
+      <a class="prev">&#10094;</a>
+      <a class="next">&#10095;</a>
+  </div>
+    <br>
+    <div style="text-align:center">
+      {% for img in img_urls %}
+        <span class="dot" data-index="{{ forloop.counter }}"></span>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>

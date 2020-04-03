@@ -1,52 +1,58 @@
-var slideIndex = 1;
-var  interval = 500;
+function CarouselXBlock(runtime, element) {
 
-$( document ).ready(function() {
-  showSlides(slideIndex);
-  myTimer = setInterval(function(){plusSlides(1)}, interval);
-  }
-)
+  $(document).ready(function() {
+    var $container = $(".slideshow-container", element);
+    var $slides = $(".mySlides", element);
+    var $dots = $(".dot", element);
+    var $prev = $(".prev", element);
+    var $next = $(".next", element);
 
-function plusSlides(n){
-  clearInterval(myTimer);
-  if (n < 0){
-    showSlides(slideIndex -= 1);
-  } else {
-    showSlides(slideIndex += 1); 
-  }
-  if (n === -1){
-    myTimer = setInterval(function(){plusSlides(n + 2)}, interval);
-  } else {
-    myTimer = setInterval(function(){plusSlides(n + 1)}, interval);
-  }
-}
+    var slideIndex = 1;
+    var interval = $container.attr('interval');
 
-function currentSlide(n){
-  clearInterval(myTimer);
-  myTimer = setInterval(function(){plusSlides(n + 1)}, interval);
-  showSlides(slideIndex = n);
-}
+    var firstSlide = $slides[0];
+    var initialContainerHeigth = $container.width() * $(firstSlide[0]).height() / $(firstSlide[0]).width();
+    console.log(initialContainerHeigth);
+    $container.height(initialContainerHeigth);
+    showSlides(slideIndex);
+    var myTimer = setInterval(function(){plusSlides(1)}, interval);
 
-function showSlides(n){
-  interval = $(".slideshow-container").attr('interval');
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-  }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-  }
-  $('.slideshow-container').stop()
-  $('.slideshow-container').animate(
-    {
-      height: $('.slideshow-container').width() * $(slides[slideIndex-1]).height() / $(slides[slideIndex-1]).width()
-    },
-    interval / 5
-  );
-  slides[slideIndex-1].style.display = "block";
-  dots[slideIndex-1].className += " active";
+    $prev.on("click", function(){plusSlides(-1)})
+
+    $next.on("click", function(){plusSlides(1)})
+
+    $dots.on("click", function() {
+      clearInterval(myTimer);
+      slideIndex = $(this).data("index");
+      myTimer = setInterval(function(){plusSlides(slideIndex + 1)}, interval);
+      showSlides(slideIndex);
+    })
+
+    function plusSlides(n){
+      if (n < 0){
+        showSlides(slideIndex -= 1);
+      } else {
+        showSlides(slideIndex += 1);
+      }
+    }
+
+    function showSlides(n){
+      if (n > $slides.length) {
+        slideIndex = 1
+      } else if (n < 1) {
+        slideIndex = $slides.length
+      }
+      $slides.css("display", "none")
+      $dots.removeClass("active");
+      $container.stop()
+      $container.animate(
+        {
+          height: $container.width() * $($slides[slideIndex-1]).height() / $($slides[slideIndex-1]).width()
+        },
+        interval / 5
+      );
+      $slides[slideIndex-1].style.display = "block";
+      $dots[slideIndex-1].className += " active";
+    }
+  });
 }
