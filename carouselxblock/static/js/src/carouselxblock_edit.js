@@ -1,48 +1,73 @@
 function crouselXBlockInitEdit(runtime, element) {
-    $('.add_input_url').on('click', function(){
-        $('.img_url_fields').append(
-            '<div class="wrapper-comp-setting">' +
-                '<label class="label setting-label" for="url"> "New url" </label>' +
-                '<input class="input setting-input url" value="" type="text">' +
-                '<a href="#" class="delete_input_url"> X </a>' +
-            '</div>'
-        )
-    });
-    
-    $('.img_url_fields').delegate('.delete_input_url', 'click', function(){
-        $( this ).parent( ".wrapper-comp-setting" ).remove();
-    });
+
+    var saveHandlerUrl = runtime.handlerUrl(element, 'save_carouselxblock');
+    var uploadImgHandlerUrl = runtime.handlerUrl(element, 'upload_img');
 
     $(element).find('.action-cancel').bind('click', function () {
         runtime.notify('cancel', {});
     });
 
-    $(element).find('.action-save').bind('click', function () {
+    $(".sortable", element).sortable();
+    $(".sortable", element).disableSelection();
 
-        var url_array = $( ".input.setting-input.url" ).map(function() {
-            return $( this ).val()
-        })
-        .get()
-        .filter(function(line){return line !== ''});
-
-        var data = {
-            'display_name': $('#edit_display_name').val(),
-            'img_urls': JSON.stringify(url_array),
-            'interval': $('#interval').val()
-        };
-        runtime.notify('save', { state: 'start' });
-
-        var handlerUrl = runtime.handlerUrl(element, 'save_carouselxblock');
-        console.log(handlerUrl);
-        console.log(data);
-
-        $.post(handlerUrl, JSON.stringify(data)).done(function (response) {
-            if (response.result === 'success') {
-                runtime.notify('save', { state: 'end' });
-            }
-            else {
-                runtime.notify('error', { msg: response.message });
+    $(element).find('#files').bind('change', function() {
+        var form_data = new FormData();
+        $.each($(element).find('#files'), function(i, obj) {
+            $.each(obj.files,function(i,file){
+                form_data.append('files', file);
+            });
+        });
+        $.ajax({
+            url: uploadImgHandlerUrl,
+            dataType: 'text',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: "POST",
+            success: function(response){
+                var response = $.parseJSON(response)
+                var $imgList = $('.sortable.urls', element);
+                $imgList.html('');
+                for (url of response.img_urls){
+                    $imgList.append(
+                        '<li class="ui-state-default">' +
+                        '<img class="preview" data-path="' + url + '" src="' + response.media_url + url + '">' +
+                        '</li>'
+                    )
+                }
+            },
+            error: function(err) {
+              console.log(err);
             }
         });
     });
+
+    $(element).find('.action-save').bind('click', function() {
+        var form_data = new FormData();
+        var display_name = $(element).find('#edit_display_name').val();
+        var interval = $(element).find('#interval').val();
+        form_data.append('display_name', display_name);
+        $(element).find('.preview').each(function() {
+            form_data.append('img_urls', $( this ).data('path'));
+        })
+        form_data.append('interval', interval);
+        runtime.notify('save', { state: 'start' });
+        $.ajax({
+          url: saveHandlerUrl,
+          dataType: 'text',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: form_data,
+          type: "POST",
+          success: function(){
+            runtime.notify('save', {state: 'end'});
+          },
+          error: function(err) {
+            console.log(err);
+          }
+        });
+    });
+
 }
