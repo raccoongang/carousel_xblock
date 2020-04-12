@@ -1,34 +1,42 @@
+{% load static %}
+
 <div class="wrapper-comp-settings editor-with-buttons is-active" id="settings-tab">
   <ul class="list-input settings-list">
 
     <li class="field comp-setting-entry is-set">
       <div class="wrapper-comp-setting">
-        <label class="label setting-label" for="edit_display_name">  "Display Name" </label>
+        <label class="label setting-label" for="edit_display_name"> "Display Name" </label>
         <input class="input setting-input" id="edit_display_name" value="{{ display_name }}" type="text">
       </div>
-      <span class="tip setting-help">  "Title" </span>
     </li>
 
     <li class="field comp-setting-entry is-set">
       <div class='img_url_fields'>
-        {% for url in img_urls %}
           <div class="wrapper-comp-setting">
-            <label class="label setting-label" for="url">  "Img url" </label>
-            <input class="input setting-input url" value="{{ url }}" type="text">
-            {% if not forloop.first %}<a href="#" class="delete_input_url"> X </a>{% endif %}
+            <label class="label setting-label" for="urls"> "Img Order" </label>
+            <ul class="sortable urls">
+              {% for url in img_urls %}
+                <li class="ui-state-default">
+                  <img class="preview" data-path="{{url}}" src="{% get_media_prefix %}{{url}}">
+                </li>
+              {% endfor %}
+            </ul>
           </div>
-        {% endfor %}
       </div>
-      <span class="tip setting-help">  "Img URL"</span>
-      <a href="#" class="add_input_url"> Add url </a>
     </li>
 
     <li class="field comp-setting-entry is-set">
       <div class="wrapper-comp-setting">
-        <label class="label setting-label" for="interval">  "Interval" </label>
+        <label class="label setting-label" for="files"> "Files" </label>
+        <input class="input setting-input" id="files" type="file" multiple/>
+      </div>
+    </li>
+
+    <li class="field comp-setting-entry is-set">
+      <div class="wrapper-comp-setting">
+        <label class="label setting-label" for="interval"> "Interval" </label>
         <input class="input setting-input" id="interval" value="{{ interval }}" type="text">
       </div>
-      <span class="tip setting-help"> "Interval" </span>
     </li>
 
   </ul>

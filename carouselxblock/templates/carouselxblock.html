@@ -1,13 +1,15 @@
+{% load static %}
+
 <div class="carousel">
   <h1>{{display_name}}</h1>
   <div class="slideshow-container" interval="{{interval}}">
 
-    {% for img in img_urls %}
-      <div class="mySlides fade">
+    {% for url in img_urls %}
+      <div class="slide fade">
         {% if img_urls|length > 1 %}
           <div class="numbertext">{{ forloop.counter }} / {{img_urls|length}}</div>
         {% endif %}
-        <img src="{{img}}">
+        <img src="{% get_media_prefix %}{{url}}">
       </div>
     {% endfor %}
 
