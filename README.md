@@ -12,6 +12,6 @@ Select Advanced -> carousel in your unit.
 ## Install
 ```
     sudo -sHu edxapp
-    # Install VideoXBlock using pip
+    # Install Carousel xblock using pip
     pip install --process-dependency-links -e "git+https://github.com/raccoongang/carousel_xblock.git@master#egg=carouselxblock"
 ```
