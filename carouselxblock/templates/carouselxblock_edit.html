@@ -18,6 +18,7 @@
               {% for url in img_urls %}
                 <li class="ui-state-default">
                   <img class="preview" data-path="{{url}}" src="{% get_media_prefix %}{{url}}">
+                  <button class="delete_img" data-path="{{url}}">×</button>
                 </li>
               {% endfor %}
             </ul>
