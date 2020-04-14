@@ -10,6 +10,11 @@ function crouselXBlockInitEdit(runtime, element) {
     $(".sortable", element).sortable();
     $(".sortable", element).disableSelection();
 
+    $('.delete_img', element).on('click', function() {
+        console.log('delete_url');
+        $(this).parent('li').remove();
+    });
+
     $(element).find('#files').bind('change', function() {
         var form_data = new FormData();
         $.each($(element).find('#files'), function(i, obj) {
@@ -33,6 +38,7 @@ function crouselXBlockInitEdit(runtime, element) {
                     $imgList.append(
                         '<li class="ui-state-default">' +
                         '<img class="preview" data-path="' + url + '" src="' + response.media_url + url + '">' +
+                        '<button class="delete_img" data-path="' + url + '">×</button>' +
                         '</li>'
                     )
                 }

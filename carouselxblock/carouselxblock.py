@@ -108,7 +108,7 @@ class CarouselXBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             log.info('"{}" file stored at "{}"'.format(img_file.file, path))
         log.info('img_urls: "{}"'.format(img_urls))
         return Response(json_body={
-            'img_urls': img_urls,
+            'img_urls': img_urls + self.img_urls,
             'media_url': settings.ENV_TOKENS['MEDIA_URL']
         })
 
@@ -130,7 +130,7 @@ class CarouselXBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         for img_url in request.params.getall('img_urls'):
             img_urls.append(img_url)
         self.img_urls = img_urls
-        return Response(json_body={'result': 'request'})
+        return Response(json_body={'status': 'ok'})
 
     def _file_storage_path(self, name):
         """
